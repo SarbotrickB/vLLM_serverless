@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vllm-llama
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: vllm-llama
+  template:
+    metadata:
+      labels:
+        app: vllm-llama
+    spec:
+      containers:
+      - name: vllm-llama
+        image: <DockerHub-registry>/my-vllm-llama:latest
+        ports:
+        - containerPort: 8000
+        resources:
+        #set limits as per requirment
+          limits:
+            memory: "4Gi"
+            cpu: "2000m"
