@@ -31,7 +31,7 @@ This script should load the model and serves it through an API endpoint using Fa
 ### k8s
 Created a Kubernetes deployment and service files to manage the Docker container and expose it as an API.
 
-### Deploying on serverless platform
+### Deploying on serverless platform(optional)
 We can deploy this Docker image on serverless platforms( for eg :`AWS Lambda` or `Google Cloud Run`, or `Azure Container Instances`)where these platforms can handle auto-scaling based on requests. Please note that, if we are deploying on a serverless platform, K8s is typically not needed. Serverless platforms handle most of the infrastructure management, scaling, and load balancing for you, which removes the need for K8s in these scenarios.
 
 
