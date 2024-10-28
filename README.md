@@ -11,15 +11,18 @@ Install system packages and Python packages needed by vLLM.
 #### Serverless-Oriented Entrypoint:
 The entry point (uvicorn, FastAPI) initializes the model each time the container spins up, handling requests and shutting down after execution. This is critical for serverless frameworks where containers are spun up and down based on demand.
 ###  Push to a Container Registry
-```docker tag my-vllm-llama:latest <DockerHub-registry>/my-vllm-llama:latest
+```
+docker tag my-vllm-llama:latest <DockerHub-registry>/my-vllm-llama:latest
 docker push <DockerHub-registry>/my-vllm-llama:latest
 ```
 ### Build and Run the Docker Image
-```docker build -t my-vllm-llama:latest .
+```
+docker build -t my-vllm-llama:latest .
 docker run -p 8000:8000 my-vllm-llama:latest
 ```
 ### Test locally
-```curl -X POST "http://localhost:8000/predict" -d '{"text": "Sample input"}'
+```
+curl -X POST "http://localhost:8000/predict" -d '{"text": "Sample input"}'
 ```
 
 ### run_vllm_server.py
