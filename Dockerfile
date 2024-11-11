@@ -1,21 +1,25 @@
-# For GPU-based deployments, choosing an NVIDIA CUDA image.
-FROM nvidia/cuda:11.7.1-cudnn8-runtime-ubuntu20.04 
+FROM nvidia/cuda:12.2.0-runtime-ubuntu20.04
 
-# Installing necessary system dependencies.
-RUN apt-get update && apt-get install -y \
-    git \
-    python3-pip \
-    && rm -rf /var/lib/apt/lists/*
+# Install Python 3.8 and pip
+RUN apt-get update && \
+    apt-get install -y python3.8 python3-pip && \
+    rm -rf /var/lib/apt/lists/*
 
-# Installing Python dependencies for vLLM and other packages.
+# Upgrade pip
+RUN python3.8 -m pip install --upgrade pip
+
+# Install Python dependencies, including uvicorn
 COPY requirements.txt /app/requirements.txt
-RUN pip install --no-cache-dir -r /app/requirements.txt
+RUN python3.8 -m pip install --user uvicorn && \
+    python3.8 -m pip install -r /app/requirements.txt
 
-# Copy application code and model setup scripts.
+# Copy the application code
 COPY . /app
 WORKDIR /app
 
-# Configuring entry point for serverless execution with FastAPI, Flask, or a similar lightweight server.
-# For serverless, FastAPI is ideal as it’s compatible with ASGI servers.
-ENTRYPOINT ["uvicorn", "run_vllm_server:app", "--host", "0.0.0.0", "--port", "8000"]
+# Set Hugging Face token as an environment variable
+ARG HUGGINGFACE_TOKEN
+ENV HUGGINGFACE_TOKEN=${HUGGINGFACE_TOKEN}
 
+# Run the model server with uvicorn
+ENTRYPOINT ["python3.8", "run_vllm_server.py"]
